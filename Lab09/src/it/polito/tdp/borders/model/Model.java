@@ -2,13 +2,16 @@ package it.polito.tdp.borders.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 import org.jgrapht.Graphs;
 import org.jgrapht.alg.ConnectivityInspector;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.traverse.DepthFirstIterator;
 
 import it.polito.tdp.borders.db.BordersDAO;
 
@@ -86,5 +89,24 @@ public class Model {
 
 	}
 	
+	public List <Country> getVertici(){
+		
+		List <Country> c =  new ArrayList<>(grafo.vertexSet());
+		
+		return c;
+	}
+
+	public List<Country> nodiRaggiungibili(Country country) {
+				
+		List <Country> visitati = new ArrayList<>();
+		
+		BreadthFirstIterator<Country, DefaultEdge> dfv =  new BreadthFirstIterator<>(grafo,country);
+		
+		while(dfv.hasNext()) {
+			
+			visitati.add(dfv.next());
+		}
+		return visitati;
+	}
 
 }
