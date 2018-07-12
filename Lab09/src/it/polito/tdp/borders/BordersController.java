@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.borders.model.Model;
+import it.polito.tdp.borders.model.Vicino;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -16,6 +17,11 @@ import javafx.scene.control.TextField;
 public class BordersController {
 
 	Model model;
+	
+	public void setModel(Model model) {
+		
+		this.model=model;
+	}
 
 	@FXML // ResourceBundle that was given to the FXMLLoader
 	private ResourceBundle resources;
@@ -31,8 +37,35 @@ public class BordersController {
 
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
+		
+		try {
+	
+			if(Integer.parseInt(txtAnno.getText()) < 1816 || Integer.parseInt(txtAnno.getText()) > 2016) {
+							
+				txtResult.setText("inserire un valore numerico compreso tra 1816 e 2016");
+				
+				return;
+			}
+			
+			model.calcoloConfini(Integer.parseInt(txtAnno.getText()));
+			
+			
+			for(Vicino vicino : model.numeroVicini()) {
+				
+				txtResult.appendText(vicino.toString());
+				
+			}
+			
+			txtResult.appendText(""+model.componentiConnesse());
 
-		txtResult.setText("Todo!");
+		}
+		
+		catch (NumberFormatException e) {
+			
+			txtResult.setText("formato numerico errato ");
+			
+		}
+		
 	}
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
